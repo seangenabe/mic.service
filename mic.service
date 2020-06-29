@@ -1,0 +1,15 @@
+# systemd service to enable audio loopback
+
+[Unit]
+Description=Echo microphone input to speaker output
+Requires=pulseaudio.service
+After=pulseaudio.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/pactl load-module module-loopback latency_msec=1
+ExecStop=/usr/bin/pactl unload-module module-loopback
+
+[Install]
+WantedBy=pulseaudio.service
